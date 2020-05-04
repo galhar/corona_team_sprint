@@ -39,6 +39,8 @@ def main():
                 s = connect_protocol(s)
                 while True:
                     cmd = s.recv(CMD_SIZE)
+                    if cmd == '':
+                        break
                     print("Executing command", cmd)
                     ard_ser.write(cmd)
 
