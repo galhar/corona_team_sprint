@@ -19,7 +19,7 @@ def connect_protocol(s):
     inp = ''
     inp = s.recv(OK_SIZE).decode()
 
-    print(f'Got from the server: {inp}')
+    print('Got from the server: ', inp)
     return s
 
 
@@ -39,7 +39,7 @@ def main():
                 s = connect_protocol(s)
                 while True:
                     cmd = s.recv(CMD_SIZE)
-                    print(f"Executing command {cmd}")
+                    print("Executing command", cmd)
                     ard_ser.write(cmd)
 
                     msg = ''
@@ -47,7 +47,7 @@ def main():
                         while ard_ser.inWaiting() <= 0:
                             pass
                         msg = ard_ser.readline(ard_ser.inWaiting()).decode()
-                    print(f"Got ack {msg}")
+                    print("Got ack", msg)
         except Exception as e:
             print("Exceptio Got:", e)
             continue
