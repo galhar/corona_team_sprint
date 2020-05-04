@@ -29,21 +29,25 @@ def create_arduino_connection():
 
 def main():
     ard_ser = serial.Serial("COM" + COM_NUM, BAUD_RATE)
+    while True:
+        try:
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                s.connect((HOST, PORT))
+                s = connect_protocol(s)
+                while True:
+                    cmd = s.recv(CMD_SIZE)
+                    print(f"Executing command {cmd}")
+                    ard_ser.write(cmd)
 
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.connect((HOST, PORT))
-        s = connect_protocol(s)
-        while True:
-            cmd = s.recv(CMD_SIZE)
-            print(f"Executing command {cmd}")
-            ard_ser.write(cmd)
-
-            msg = ''
-            while 'ACK' not in msg:
-                while ard_ser.inWaiting() <= 0:
-                    pass
-                msg = ard_ser.readline(ard_ser.inWaiting()).decode()
-            print(f"Got ack {msg}")
+                    msg = ''
+                    while 'ACK' not in msg:
+                        while ard_ser.inWaiting() <= 0:
+                            pass
+                        msg = ard_ser.readline(ard_ser.inWaiting()).decode()
+                    print(f"Got ack {msg}")
+        except Exception as e:
+            print("Exceptio Got:", e)
+            continue
 
 if __name__ == '__main__':
     main()
