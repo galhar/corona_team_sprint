@@ -14,6 +14,7 @@ LEFT_CMD = 'L'
 RIGHT_CMD = 'R'
 FORWARD_CMD = 'F'
 BACK_CMD = 'B'
+STOP_CMD = ' '
 OK_SIGNAL = 'OK'
 
 # ---------------------------------------- others ----------------------------------------

@@ -9,7 +9,8 @@ key_to_cmd = {
     b'a': LEFT_CMD,
     b'w': FORWARD_CMD,
     b'd': RIGHT_CMD,
-    b's': BACK_CMD
+    b's': BACK_CMD,
+    b' ': STOP_CMD
 }
 
 HOST = SERVER_IP  # The server's hostname or IP address

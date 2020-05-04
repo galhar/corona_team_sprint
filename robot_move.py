@@ -32,12 +32,13 @@ def main():
     while True:
         try:
             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-                s.connect((HOST, PORT))
+                if s.connect_ex((HOST, PORT)):
+                    time.sleep(0.3)
+                    continue
+
                 s = connect_protocol(s)
                 while True:
                     cmd = s.recv(CMD_SIZE)
-                    if not cmd:
-                        break
                     print(f"Executing command {cmd}")
                     ard_ser.write(cmd)
 

