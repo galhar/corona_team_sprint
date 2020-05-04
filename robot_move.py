@@ -28,7 +28,7 @@ def create_arduino_connection():
 
 
 def main():
-    ard_ser = serial.Serial("COM" + COM_NUM, BAUD_RATE)
+    ard_ser = serial.Serial(port='/dev/ttyUSB0', baudrate=BAUD_RATE)
     while True:
         try:
             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -36,6 +36,8 @@ def main():
                 s = connect_protocol(s)
                 while True:
                     cmd = s.recv(CMD_SIZE)
+                    if not cmd:
+                        break
                     print(f"Executing command {cmd}")
                     ard_ser.write(cmd)
 
